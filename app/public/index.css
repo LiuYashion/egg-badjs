@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body {
+  background: #aaa;
+}
+.container {
+  display: flex;
+  width: 1300px;
+  height: 600px;
+  border: solid 1px #e1e1e1;
+  margin: 0 auto;
+  border-radius: 4px;
+  margin-top: 100px;
+  background: #f4f4f4;
+}
+.container > div:nth-child(1) {
+  border-right: solid 1px #e1e1e1;
+}
+.evl-area {
+  width: 0;
+  flex-grow: 0.4;
+  position: relative;
+}
+.log-area {
+  width: 0;
+  flex-grow: 1;
+  position: relative;
+}
+.evl-input {
+  width: 320px;
+  height: 100px;
+  outline: none;
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+button {
+  padding: 4px 16px;
+  margin: 17px 0 0 17px;
+}
+.log-area {
+  margin: 21px;
+  font-size: 12px;
+}
+.log-area .report-title {
+  display: flex;
+  height: 20px;
+  line-height: 20px;
+  border-bottom: solid 1px #b4b4b4;
+  background: #b4b4b4;
+  text-align: center;
+  padding-right: 18px;
+}
+.log-area .report-lists {
+  overflow-y: scroll;
+  height: 540px;
+}
+.log-area .report-lists li {
+  display: flex;
+  border-bottom: solid 1px #b4b4b4;
+}
+.log-area .report-lists li span {
+  border-right: solid 1px #b4b4b4;
+  padding: 4px;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.log-area .report-lists li span:nth-child(1) {
+  border-left: solid 1px #b4b4b4;
+}
+.log-area .fg-1 {
+  flex-grow: 2;
+  width: 0;
+}
+.log-area .fg-4 {
+  flex-grow: 4;
+  width: 0;
+}
+.preset-container {
+  border-top: solid 1px #e1e1e1;
+  margin-top: 20px;
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>bad-js</title>
+</head>
+<link rel="stylesheet" href="./index.css">
+<script src="./js/bj-report.js"></script>
+<script src="./js/bj-wrap.js"></script>
+<!-- <script src="../node_modules/requirejs/require.js"></script> -->
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<body>
+  <div class='container'>
+    <div class='evl-area'>
+
+      <textarea style="resize:none" class='evl-input'></textarea>
+      <button class='confirm-button'>执行</button>
+      <button class='refresh-button'>刷新</button>
+
+      <div class='preset-container'>
+        <button class='script-error'>script错误</button>
+        <button class='ajax-error'>ajax错误</button>
+        <button class='settime-error'>settimeout错误</button>
+      </div>
+
+    </div>
+    <div class='log-area'>
+      <div class='report-title'>
+        <span class='fg-1'>position</span>
+        <span class='fg-4'>userAgent</span>
+        <span class='fg-1'>host</span>
+        <span class='fg-4'>errorInfo</span>
+        <span class='fg-1'>uploadTime</span>
+      </div>
+      <ul class='report-lists'>
+        <!-- <li>
+          <span class='fg-1'>iphone 6/7/8 Plus</span>
+          <span class='fg-4'>Mozilla/5.0 (iPhone; CPU iPhone OS 10_1_1 like Mac OS X) AppleWebKit/60</span>
+          <span class='fg-1'>116.16.76.180</span>
+          <span class='fg-4'>ReferenceError: conwer is not defined</span>
+          <span class='fg-1'>2018-12-03 13:40</span>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+</body>
+<script>
+
+  BJ_REPORT.init({
+    id: 1,       
+    uin: 123,                             
+    delay: 1000,                       
+    url: "/upload"
+  })
+  BJ_REPORT.tryJs().spyJquery();
+
+
+  BJ_REPORT.offlineLog("offlineLog");
+  BJ_REPORT.reportOfflineLog();
+
+  function refreshTable(){
+    $.ajax({ 
+      type: 'GET',
+      url: `/query?t=${Date.parse(new Date())}`, 
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(res){
+        generateList(res.result)
+      }
+    })
+  }
+
+  function generateList (lists) {
+    console.log('生成lists')
+    let container = $('.report-lists')
+    container[0].innerHTML = ''
+    for (let item of lists) {
+      let template = `<li>
+        <span class='fg-1'>${item.position}</span>
+        <span class='fg-4'>${item.userAgent}</span>
+        <span class='fg-1'>${item.ip}</span>
+        <span class='fg-4'>${item.errorInfo}</span>
+        <span class='fg-1'>${item.uploadTime}</span>
+      </li>`
+      container.append(template)
+    }
+  }
+  
+  
+
+  $('.refresh-button').on('click', refreshTable)
+  $('.confirm-button').on('click', function(e){
+    let script = $('.evl-input')[0].value
+    eval(script)
+  })
+
+  refreshTable()
+
+
+  // ajax报错示例
+  $('.ajax-error').on('click', function(e){
+    $.ajax({ 
+      type: 'POST',
+      url: `https://www.google.com.hk`, 
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      error: function(e){
+        BJ_REPORT.report({
+          msg: `${e.status} ${JSON.stringify(e.responseJSON)}`,
+          target: "xxx.js",                    
+          rowNum: 100,                   
+          colNum: 100,                       
+        });
+      }
+    })
+  })
+
+  // script报错示例
+  $('.script-error').on('click', function(e){
+    console.log(unknown)
+  })
+
+  // settime-out报错示例
+  $('.settime-error').on('click', function(e){
+    window.setTimeout(() => {
+      console.log(timeout)
+    }, 1000);
+  })
+  
+
+</script>
+</html>
+
+
